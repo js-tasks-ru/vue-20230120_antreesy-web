@@ -31,23 +31,23 @@
     <div id="app" class="container">
       <div class="row">
         <div class="col">
-          <input type="number" />
+          <input type="number" v-model='inputFirst' />
         </div>
 
         <div class="col" style="display: flex; flex-direction: column; font-family: emoji">
-          <label><input type="radio" name="operator" value="sum" /> ➕</label>
-          <label><input type="radio" name="operator" value="subtract" /> ➖</label>
-          <label><input type="radio" name="operator" value="multiply" /> ✖</label>
-          <label><input type="radio" name="operator" value="divide" /> ➗</label>
+          <label><input type="radio" @change="changeOperator" name="operator" value="sum" che /> ➕</label>
+          <label><input type="radio" @change="changeOperator" name="operator" value="subtract" /> ➖</label>
+          <label><input type="radio" @change="changeOperator" name="operator" value="multiply" /> ✖</label>
+          <label><input type="radio" @change="changeOperator" name="operator" value="divide" /> ➗</label>
         </div>
 
         <div class="col">
-          <input type="number" />
+          <input type="number"  v-model='inputSecond'  />
         </div>
 
         <div class="col">=</div>
 
-        <output class="col">0</output>
+        <output class="col">{{result}}</output>
       </div>
     </div>
 
