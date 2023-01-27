@@ -4,7 +4,7 @@ import { createApp } from './vendor/vue.esm-browser.js';
 
 const app = createApp({
   data() {
-    return { count: 5 };
+    return { count: 0 };
   },
 });
 

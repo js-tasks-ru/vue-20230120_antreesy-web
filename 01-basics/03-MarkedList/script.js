@@ -30,7 +30,6 @@ const emails = [
 ];
 
 // Требуется создать Vue приложение
-
 const app = createApp({
   data() {
     return {
@@ -56,7 +55,7 @@ const app = createApp({
      * @returns boolean
      */
     hasMatch(string, substring) {
-      if (!substring) return;
+      if (!substring) return false;
 
       return string.toLowerCase().includes(substring.toLowerCase());
     },
