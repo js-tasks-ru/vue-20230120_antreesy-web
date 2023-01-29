@@ -4,6 +4,7 @@
   "useTabs": false,
   "semi": true,
   "singleQuote": true,
+  "bracketSpacing": true,
   "trailingComma": "all",
   "arrowParens": "always",
   "proseWrap": "always",

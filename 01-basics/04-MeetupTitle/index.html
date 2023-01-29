@@ -8,13 +8,13 @@
     <div id="app">
       <div>
         <label v-for="id in idList" key="id">
-          <input type="radio" name="meetupId" :value="id" @change="activeId=id" />
-          {{id}}
+          <input type="radio" name="meetupId" :value="id" v-model="activeId" />
+          {{ id }}
         </label>
 
         <hr />
 
-        <h3>{{title}}</h3>
+        <h3>{{ title }}</h3>
       </div>
     </div>
 

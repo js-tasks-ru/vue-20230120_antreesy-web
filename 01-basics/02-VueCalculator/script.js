@@ -1,5 +1,12 @@
 import { createApp } from './vendor/vue.esm-browser.js';
 
+const options = [
+  { value: 'sum', label: '➕' },
+  { value: 'subtract', label: '➖' },
+  { value: 'multiply', label: '✖' },
+  { value: 'divide', label: '➗' },
+];
+
 // Создайте Vue приложение
 const app = createApp({
   data() {
@@ -7,6 +14,7 @@ const app = createApp({
       inputFirst: 0,
       inputSecond: 0,
       operator: null,
+      options,
     };
   },
 

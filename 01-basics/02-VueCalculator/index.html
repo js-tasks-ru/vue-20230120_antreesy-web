@@ -35,10 +35,10 @@
         </div>
 
         <div class="col" style="display: flex; flex-direction: column; font-family: emoji">
-          <label><input type="radio" @change="changeOperator" name="operator" value="sum" /> ➕</label>
-          <label><input type="radio" @change="changeOperator" name="operator" value="subtract" /> ➖</label>
-          <label><input type="radio" @change="changeOperator" name="operator" value="multiply" /> ✖</label>
-          <label><input type="radio" @change="changeOperator" name="operator" value="divide" /> ➗</label>
+          <label v-for="(option, index) in options" key="index">
+            <input type="radio" v-model="operator" name="operator" :value="option.value" />
+            {{ option.label }}
+          </label>
         </div>
 
         <div class="col">
@@ -47,7 +47,7 @@
 
         <div class="col">=</div>
 
-        <output class="col">{{result}}</output>
+        <output class="col">{{ result }}</output>
       </div>
     </div>
 
