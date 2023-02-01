@@ -3,7 +3,7 @@ import { defineComponent } from '../vendor/vue.esm-browser.js';
 export default defineComponent({
   name: 'MeetupInfo',
 
-  localeOptions : { year: 'numeric', month: 'long', day: 'numeric'},
+  localeOptions: { year: 'numeric', month: 'long', day: 'numeric' },
   langOptions: 'en-US',
 
   props: {
@@ -24,7 +24,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.$options.langOptions = navigator.language
+    this.$options.langOptions = navigator.language;
   },
 
   template: `

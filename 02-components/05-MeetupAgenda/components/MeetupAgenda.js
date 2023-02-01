@@ -5,11 +5,11 @@ export default defineComponent({
   name: 'MeetupAgenda',
 
   components: {
-    'MeetupAgendaItem': MeetupAgendaItem,
+    MeetupAgendaItem: MeetupAgendaItem,
   },
 
   props: {
-    agenda: Array
+    agenda: Array,
   },
 
   template: `

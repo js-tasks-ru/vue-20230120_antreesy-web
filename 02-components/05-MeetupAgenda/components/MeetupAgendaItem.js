@@ -8,8 +8,8 @@ export default defineComponent({
   agendaItemDefaultTitles,
 
   props: {
-    agendaItem : {
-      type: Object
+    agendaItem: {
+      type: Object,
       // {
       //   id: Number,
       //   startsAt: String,
@@ -20,7 +20,8 @@ export default defineComponent({
       //   speaker: String,
       //   language: String,
       // }
-    }},
+    },
+  },
 
   template: `
     <div class="agenda-item">
