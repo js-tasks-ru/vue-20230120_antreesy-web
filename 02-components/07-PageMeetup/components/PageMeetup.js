@@ -57,7 +57,7 @@ export default defineComponent({
 
   template: `
     <div class="page-meetup">
-      <MeetupView v-show="meetup" :meetup='meetup' />
+      <MeetupView v-if="meetup" :meetup='meetup' />
 
       <UiContainer v-if="isLoading">
         <UiAlert>Загрузка...</UiAlert>
