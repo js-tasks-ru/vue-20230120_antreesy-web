@@ -4,7 +4,7 @@ export default defineComponent({
   name: 'MeetupInfo',
 
   localeOptions: { year: 'numeric', month: 'long', day: 'numeric' },
-  langOptions: 'en-US',
+  langOptions: navigator.language,
 
   props: {
     organizer: {
@@ -23,8 +23,14 @@ export default defineComponent({
     },
   },
 
-  mounted() {
-    this.$options.langOptions = navigator.language;
+  computed: {
+    datetime() {
+      return new Date(this.date).toISOString().substr(0, 10);
+    },
+
+    localizedDate() {
+      return new Date(this.date).toLocaleDateString(this.$options.langOptions, this.$options.localeOptions);
+    },
   },
 
   template: `
@@ -39,8 +45,8 @@ export default defineComponent({
       </li>
       <li>
         <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time :datetime="new Date(date).toISOString().substr(0, 10)">
-          {{ new Date(date).toLocaleDateString($options.langOptions, $options.localeOptions) }}
+        <time :datetime="datetime">
+          {{ localizedDate }}
         </time>
       </li>
     </ul>

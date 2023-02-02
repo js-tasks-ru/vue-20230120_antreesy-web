@@ -10,16 +10,7 @@ export default defineComponent({
   props: {
     agendaItem: {
       type: Object,
-      // {
-      //   id: Number,
-      //   startsAt: String,
-      //   endsAt: String,
-      //   type: String,
-      //   title: String,
-      //   description: String,
-      //   speaker: String,
-      //   language: String,
-      // }
+      required: true,
     },
   },
 
