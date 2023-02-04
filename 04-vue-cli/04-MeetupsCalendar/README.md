@@ -44,7 +44,7 @@ export default {
   },
 };
 // ...
-this.date.setMonth(1);                       // ❌ Не реактивно!
+this.date.setMonth(1); // ❌ Не реактивно!
 this.date = new Date(this.date.setMonth(1)); // ✅ Реактивно
 ```
 
