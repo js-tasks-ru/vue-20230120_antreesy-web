@@ -69,12 +69,10 @@ export default {
 
   computed: {
     prevMonth(): number {
-      const prevMonth = this.activeMonth.getMonth() - 1;
-      return prevMonth < 0 ? 11 : prevMonth;
+      return this.getFirstDayOfMonth(this.activeMonth, -1).getMonth();
     },
     nextMonth(): number {
-      const nextMonth = this.activeMonth.getMonth() + 1;
-      return nextMonth > 11 ? 0 : nextMonth;
+      return this.getFirstDayOfMonth(this.activeMonth, 1).getMonth();
     },
     headerMonth(): string {
       return this.activeMonth.toLocaleDateString(navigator.language, {
@@ -96,11 +94,7 @@ export default {
     },
 
     currentGrid(): Array<GridDay> {
-      if (this.gridCache[this.activeMonth.valueOf()]) {
-        return this.gridCache[this.activeMonth.valueOf()];
-      }
-
-      return this.createNewGrid()
+      return this.gridCache[this.activeMonth.valueOf()] ?? this.createNewGrid()
     },
   },
 
@@ -108,7 +102,7 @@ export default {
     createNewGrid(): Array<GridDay> {
       const grid: Array<GridDay> = [];
       const firstDay = this.activeMonth;
-      const lastDay = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1, 0));
+      const lastDay = this.getLastDayOfMonth(this.activeMonth);
       const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
       let newDay: Date = firstDay;
@@ -139,15 +133,21 @@ export default {
       return grid;
     },
 
+    // CONTROLS
     goToPrevMonth(): void {
-      this.activeMonth = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() - 1, 1));
+      this.activeMonth = this.getFirstDayOfMonth(this.activeMonth, -1);
     },
     goToNextMonth(): void {
-      this.activeMonth = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1, 1));
+      this.activeMonth = this.getFirstDayOfMonth(this.activeMonth, 1);
     },
 
-    getFirstDayOfMonth(date: Date): Date {
-      return new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
+    // UTILS
+    getFirstDayOfMonth(date: Date, monthOffset: number = 0): Date {
+      return new Date(Date.UTC(date.getFullYear(), date.getMonth() + monthOffset, 1));
+    },
+
+    getLastDayOfMonth(date: Date, monthOffset: number = 0): Date {
+      return new Date(Date.UTC(date.getFullYear(), date.getMonth() + monthOffset + 1, 0));
     },
 
     isInactive(date: Date): boolean {
@@ -172,7 +172,7 @@ export default {
           );
         })
       }
-    }
+    },
   },
 };
 </script>
