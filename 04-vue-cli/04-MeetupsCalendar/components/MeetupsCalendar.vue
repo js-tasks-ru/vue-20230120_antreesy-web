@@ -15,7 +15,7 @@
         :class="{ 'calendar-view__cell_inactive': day.inactive }" tabindex="0">
         <div class="calendar-view__cell-day">{{ day.date.getDate() }}</div>
         <div v-if="day.meetups.length" class="calendar-view__cell-content">
-          <a v-for="meetup in day.meetups" :key="meetup.id" href="/meetups/1" class="calendar-event">{{
+          <a v-for="meetup in meetupCache[day.id]" :key="meetup.id" href="/meetups/1" class="calendar-event">{{
             meetup.title
           }}</a>
         </div>
@@ -39,8 +39,12 @@ type Meetup = {
   title: string;
 };
 
+type MeetupCache = {
+  [key: string]: Array<Meetup>
+}
+
 type GridDay = {
-  id: number;
+  id: string;
   date: Date;
   inactive: boolean;
   meetups: Array<Meetup>;
@@ -79,6 +83,18 @@ export default {
       });
     },
 
+    meetupCache(): MeetupCache {
+      const cache: MeetupCache = {}
+      this.meetups.forEach(meetup => {
+        const id = this.getISODate(new Date(meetup.date))
+
+        if (cache[id]) cache[id].push(meetup)
+        else cache[id] = [meetup]
+      })
+
+      return cache
+    },
+
     currentGrid(): Array<GridDay> {
       if (this.gridCache[this.activeMonth.valueOf()]) {
         return this.gridCache[this.activeMonth.valueOf()];
@@ -92,9 +108,7 @@ export default {
     createNewGrid(): Array<GridDay> {
       const grid: Array<GridDay> = [];
       const firstDay = this.activeMonth;
-      const lastDay = new Date(
-        new Date(this.activeMonth).setFullYear(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1, 0),
-      );
+      const lastDay = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1, 0));
       const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
       let newDay: Date = firstDay;
@@ -104,20 +118,21 @@ export default {
       do {
         grid.push(this.createGridDay(newDay));
         newDay = new Date(newDay.getTime() + MS_PER_DAY);
-      } while (newDay < lastDay);
+      } while (newDay <= lastDay);
 
       // Add preceding days
       newDay = firstDay;
-      while (newDay.getDay() !== 1) {
+      for (let i = newDay.getDay(); i > 1; i--) {
         newDay = new Date(newDay.getTime() - MS_PER_DAY);
         grid.unshift(this.createGridDay(newDay));
       }
 
       // Add following days
       newDay = lastDay;
-      while (newDay.getDay() !== 1) {
-        grid.push(this.createGridDay(newDay));
+      for (let i = newDay.getDay(); i < 7; i++) {
+        if (i === 0) break;
         newDay = new Date(newDay.getTime() + MS_PER_DAY);
+        grid.push(this.createGridDay(newDay));
       }
 
       this.gridCache[this.activeMonth.valueOf()] = grid;
@@ -125,23 +140,27 @@ export default {
     },
 
     goToPrevMonth(): void {
-      this.activeMonth = new Date(this.activeMonth.getFullYear(), this.activeMonth.getMonth() - 1);
+      this.activeMonth = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() - 1, 1));
     },
     goToNextMonth(): void {
-      this.activeMonth = new Date(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1);
+      this.activeMonth = new Date(Date.UTC(this.activeMonth.getFullYear(), this.activeMonth.getMonth() + 1, 1));
     },
 
     getFirstDayOfMonth(date: Date): Date {
-      return new Date(date.getFullYear(), date.getMonth(), 1);
+      return new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
     },
 
     isInactive(date: Date): boolean {
       return date.getMonth() === this.prevMonth || date.getMonth() === this.nextMonth;
     },
 
+    getISODate(date: Date): string {
+      return date.toISOString().slice(0, 10)
+    },
+
     createGridDay(date: Date): GridDay {
       return {
-        id: date.valueOf(),
+        id: this.getISODate(date),
         date,
         inactive: this.isInactive(date),
         meetups: this.meetups.filter((meetup) => {
