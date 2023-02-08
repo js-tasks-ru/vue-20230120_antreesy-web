@@ -6,21 +6,14 @@
     </button>
 
     <div v-show="isOpen" class="dropdown__menu" role="listbox">
-      <button
-        v-for="option in options"
-        :key="option.value"
-        class="dropdown__item"
-        :class="{ dropdown__item_icon: hasIcons }"
-        role="option"
-        type="button"
-        @click="setValue(option.value)"
-      >
+      <button v-for="option in options" :key="option.value" class="dropdown__item"
+        :class="{ dropdown__item_icon: hasIcons }" role="option" type="button" @click="setValue(option.value)">
         <ui-icon v-if="option.icon" :icon="option.icon" class="dropdown__icon" />
         {{ option.text }}
       </button>
     </div>
 
-    <select :value="modelValue" @change="setValue($event)" name="title" style="display: none">
+    <select :value="modelValue" name="title" style="display: none" @change="setValue($event.target.value)">
       <option v-for="option in options" :key="option.value" :value="option.value">{{ option.text }}</option>
     </select>
   </div>
@@ -35,10 +28,6 @@ type Option = {
   text: string;
   icon: string;
 };
-
-interface SelectEvent extends Event {
-  target: HTMLSelectElement;
-}
 
 export default {
   name: 'UiDropdown',
@@ -84,9 +73,8 @@ export default {
       this.isOpen = !this.isOpen;
     },
 
-    setValue(value: string | Event): void {
-      const newValue = typeof value === 'string' ? value : (value as SelectEvent).target.value;
-      this.$emit('update:modelValue', newValue);
+    setValue(value: string): void {
+      this.$emit('update:modelValue', value);
       this.isOpen = false;
     },
   },
