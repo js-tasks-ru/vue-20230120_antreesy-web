@@ -1,7 +1,7 @@
 <template>
   <nav class="nav">
-    <a href="/login" class="nav__link">Вход</a>
-    <a href="/register" class="nav__link">Регистрация</a>
+    <router-link to="/login" class="nav__link">Вход</router-link>
+    <router-link to="/register" class="nav__link">Регистрация</router-link>
   </nav>
 </template>
 
@@ -30,7 +30,7 @@ export default {
   display: inline-flex;
 }
 
-.nav__link + .nav__link {
+.nav__link+.nav__link {
   margin-top: 8px;
 }
 
@@ -58,7 +58,7 @@ export default {
   }
 
   .nav__link,
-  .nav__link + .nav__link {
+  .nav__link+.nav__link {
     margin-top: 0;
   }
 
