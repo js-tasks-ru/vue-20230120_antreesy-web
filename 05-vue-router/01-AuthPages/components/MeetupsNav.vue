@@ -30,7 +30,7 @@ export default {
   display: inline-flex;
 }
 
-.nav__link+.nav__link {
+.nav__link + .nav__link {
   margin-top: 8px;
 }
 
@@ -58,7 +58,7 @@ export default {
   }
 
   .nav__link,
-  .nav__link+.nav__link {
+  .nav__link + .nav__link {
     margin-top: 0;
   }
 
